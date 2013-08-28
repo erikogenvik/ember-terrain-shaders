@@ -25,6 +25,11 @@
 #define NUM_LIGHTS      3
 #endif // ifndef NUM_LIGHTS
 
+#ifdef OFFSET_MAPPING
+#define OFFSET_MAPPING_DISTANCE 100.0
+#endif
+
+
 // Either have shadows or not
 // Supports 3 lights
 #ifndef SHADOW
@@ -196,165 +201,223 @@ vec3 expand(in vec3 param)
 }
 
 #if NUM_LAYERS > 0
-vec4 splatting(in vec2 texCoord
+
 #ifdef OFFSET_MAPPING
-			   , in vec2 cameraDirTangentSpace
-			   , out vec3 blendedNormal
-#endif // ifdef OFFSET_MAPPING
-			  )
+vec4 splatting_offset_mapping(in vec2 texCoord, in vec2 cameraDirTangentSpace, out vec3 blendedNormal)
 {
 	vec4 diffuseColour;
 	// Temporary variables used by each layer calculation
-	vec2 uv; // scaled texCoord
+	vec2 uv;     // scaled texCoord
 	vec4 layerNormalHeight;
 	vec3 layerNormal;
 	float displacement;
 	float blendWeight;
 
 	uv = texCoord * scales[0][0];
-#ifdef OFFSET_MAPPING
 	layerNormalHeight = texture2D(baseTextureNormalHeight, uv);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
 	blendedNormal = layerNormalHeight.rgb;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = texture2D(baseTextureDiffuse, uv);
 
 #if NUM_LAYERS > 1
 	uv = texCoord * scales[0][1];
-	blendWeight = texture2D(coverageTexture1, texCoord).w; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture1, texCoord).w;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture1, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture1, uv), blendWeight);
 #endif // if NUM_LAYERS > 1
 #if NUM_LAYERS > 2
 	uv = texCoord * scales[0][2];
-	blendWeight = texture2D(coverageTexture1, texCoord).x; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture1, texCoord).x;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture2, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture2, uv), blendWeight);
 #endif // if NUM_LAYERS > 2
 #if NUM_LAYERS > 3
 	uv = texCoord * scales[0][3];
-	blendWeight = texture2D(coverageTexture1, texCoord).y; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture1, texCoord).y;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture3, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture3, uv), blendWeight);
 #endif // if NUM_LAYERS > 3
 #if NUM_LAYERS > 4
 	uv = texCoord * scales[1][0];
-	blendWeight = texture2D(coverageTexture1, texCoord).z; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture1, texCoord).z;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture4, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture4, uv), blendWeight);
 #endif // if NUM_LAYERS > 4
 #if NUM_LAYERS > 5
 	uv = texCoord * scales[1][1];
-	blendWeight = texture2D(coverageTexture2, texCoord).w; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture2, texCoord).w;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture5, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture5, uv), blendWeight);
 #endif // if NUM_LAYERS > 5
 #if NUM_LAYERS > 6
 	uv = texCoord * scales[1][2];
-	blendWeight = texture2D(coverageTexture2, texCoord).x; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture2, texCoord).x;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture6, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture6, uv), blendWeight);
 #endif // if NUM_LAYERS > 6
 #if NUM_LAYERS > 7
 	uv = texCoord * scales[2][3];
-	blendWeight = texture2D(coverageTexture2, texCoord).y; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture2, texCoord).y;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture7, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture7, uv), blendWeight);
 #endif // if NUM_LAYERS > 7
 #if NUM_LAYERS > 8
 	uv = texCoord * scales[2][0];
-	blendWeight = texture2D(coverageTexture2, texCoord).z; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture2, texCoord).z;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture8, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture8, uv), blendWeight);
 #endif // if NUM_LAYERS > 8
 #if NUM_LAYERS > 9
 	uv = texCoord * scales[2][1];
-	blendWeight = texture2D(coverageTexture3, texCoord).w; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture3, texCoord).w;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture9, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture9, uv), blendWeight);
 #endif // if NUM_LAYERS > 9
 #if NUM_LAYERS > 10
 	uv = texCoord * scales[2][2];
-	blendWeight = texture2D(coverageTexture3, texCoord).x; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture3, texCoord).x;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture10, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture10, uv), blendWeight);
 #endif // if NUM_LAYERS > 10
 #if NUM_LAYERS > 11
 	uv = texCoord * scales[2][3];
-	blendWeight = texture2D(coverageTexture3, texCoord).y; // Need to use unscaled uv here since coverage tex = unscaled
-#ifdef OFFSET_MAPPING
+	blendWeight = texture2D(coverageTexture3, texCoord).y;     // Need to use unscaled uv here since coverage tex = unscaled
 	layerNormalHeight = texture2D(normalHeightTexture11, uv);
 	blendedNormal = mix(blendedNormal, layerNormalHeight.rgb, blendWeight);
 	displacement = layerNormalHeight.a * scaleBias.x + scaleBias.y;
 	uv += cameraDirTangentSpace * displacement;
-#endif // ifdef OFFSET_MAPPING
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture11, uv), blendWeight);
 #endif // if NUM_LAYERS > 11
 
-#ifdef OFFSET_MAPPING
 	blendedNormal = normalize(expand(blendedNormal));
+	return diffuseColour;
+}
+
 #endif // ifdef OFFSET_MAPPING
+
+vec4 splatting(in vec2 texCoord)
+{
+	vec4 diffuseColour;
+	// Temporary variables used by each layer calculation
+	vec2 uv;     // scaled texCoord
+	float blendWeight;
+
+	uv = texCoord * scales[0][0];
+	diffuseColour = texture2D(baseTextureDiffuse, uv);
+
+#if NUM_LAYERS > 1
+	uv = texCoord * scales[0][1];
+	blendWeight = texture2D(coverageTexture1, texCoord).w;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture1, uv), blendWeight);
+#endif // if NUM_LAYERS > 1
+#if NUM_LAYERS > 2
+	uv = texCoord * scales[0][2];
+	blendWeight = texture2D(coverageTexture1, texCoord).x;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture2, uv), blendWeight);
+#endif // if NUM_LAYERS > 2
+#if NUM_LAYERS > 3
+	uv = texCoord * scales[0][3];
+	blendWeight = texture2D(coverageTexture1, texCoord).y;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture3, uv), blendWeight);
+#endif // if NUM_LAYERS > 3
+#if NUM_LAYERS > 4
+	uv = texCoord * scales[1][0];
+	blendWeight = texture2D(coverageTexture1, texCoord).z;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture4, uv), blendWeight);
+#endif // if NUM_LAYERS > 4
+#if NUM_LAYERS > 5
+	uv = texCoord * scales[1][1];
+	blendWeight = texture2D(coverageTexture2, texCoord).w;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture5, uv), blendWeight);
+#endif // if NUM_LAYERS > 5
+#if NUM_LAYERS > 6
+	uv = texCoord * scales[1][2];
+	blendWeight = texture2D(coverageTexture2, texCoord).x;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture6, uv), blendWeight);
+#endif // if NUM_LAYERS > 6
+#if NUM_LAYERS > 7
+	uv = texCoord * scales[2][3];
+	blendWeight = texture2D(coverageTexture2, texCoord).y;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture7, uv), blendWeight);
+#endif // if NUM_LAYERS > 7
+#if NUM_LAYERS > 8
+	uv = texCoord * scales[2][0];
+	blendWeight = texture2D(coverageTexture2, texCoord).z;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture8, uv), blendWeight);
+#endif // if NUM_LAYERS > 8
+#if NUM_LAYERS > 9
+	uv = texCoord * scales[2][1];
+	blendWeight = texture2D(coverageTexture3, texCoord).w;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture9, uv), blendWeight);
+#endif // if NUM_LAYERS > 9
+#if NUM_LAYERS > 10
+	uv = texCoord * scales[2][2];
+	blendWeight = texture2D(coverageTexture3, texCoord).x;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture10, uv), blendWeight);
+#endif // if NUM_LAYERS > 10
+#if NUM_LAYERS > 11
+	uv = texCoord * scales[2][3];
+	blendWeight = texture2D(coverageTexture3, texCoord).y;     // Need to use unscaled uv here since coverage tex = unscaled
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture11, uv), blendWeight);
+#endif // if NUM_LAYERS > 11
+
 	return diffuseColour;
 }
 
 #endif // if NUM_LAYERS > 0
 
-void lighting(in int index,
 #ifdef OFFSET_MAPPING
-			  in mat3 TBN,   // Tangent bitangent normal matrix for converting the light direction
+void lighting_offset_mapping(in int index,
+							 in mat3 TBN, // Tangent bitangent normal matrix for converting the light direction
+							 in vec3 normal, // in tangent space
+							 in float attenuation,
+							 in float shadowing,
+							 inout vec4 diffuse)
+{
+	// Compute vector from surface to light position
+	vec3 lightDir = lightPositions[index].xyz - positionObjSpace * lightPositions[index].w;
+
+	lightDir = TBN * lightDir;
+
+	float NdotL = clamp(dot(normal, lightDir), 0, 1);
+	diffuse += lightDiffuseColors[index] * NdotL * attenuation * shadowing;
+}
+
 #endif // ifdef OFFSET_MAPPING
-			  in vec3 normal,                   // in tangent space if using normal mapping, object space otherwise
+
+void lighting(in int index,
+			  in vec3 normal,             // in object space
 			  in float attenuation,
 			  in float shadowing,
 			  inout vec4 diffuse)
@@ -362,11 +425,8 @@ void lighting(in int index,
 	// Compute vector from surface to light position
 	vec3 lightDir = lightPositions[index].xyz - positionObjSpace * lightPositions[index].w;
 
-#ifdef OFFSET_MAPPING
-	lightDir = TBN * lightDir;
-#endif // ifdef OFFSET_MAPPING
-
 	float NdotL = clamp(dot(normal, lightDir), 0, 1);
+
 	diffuse += lightDiffuseColors[index] * NdotL * attenuation * shadowing;
 }
 
@@ -481,29 +541,36 @@ void main()
 
 	// get the normal from the normal texture
 	vec3 normal = normalize(expand(texture2D(normalTexture, uv).rgb));
+	vec4 diffuseColour;
 
 #if OFFSET_MAPPING
-	// Offset mapping code based heavily on Ogre TerrainMaterialGeneratorA
-
-	// derive the tangent space basis
-	// we do this in the pixel shader because we don't have per-vertex normals
-	// because of the LOD, we use a normal map
-	// For Ember, the tangent is always +x because the terrain is aligned to X_Z and we work in object space
-	vec3 tangent = vec3(1, 0, 0);
-
-	vec3 binormal = normalize(cross(tangent, normal));
-	// note, now we need to re-cross to derive tangent again because it wasn't orthonormal
-	tangent = normalize(cross(normal, binormal));
-	// derive final matrix
-	mat3 TBN = mat3(tangent, binormal, normal);
-
-	vec3 cameraPositionTangentSpace = normalize(TBN * (cameraPositionObjSpace - positionObjSpace));
-
 	vec3 blendedNormalTangentSpace;
-	// Blends all the diffuse colors and normals
-	vec4 diffuseColour = splatting(uv, cameraPositionTangentSpace.xy, blendedNormalTangentSpace);
+	mat3 TBN;
+	float cameraDistance = distance(cameraPositionObjSpace, positionObjSpace);
+	if (cameraDistance < OFFSET_MAPPING_DISTANCE) {
+		// Offset mapping code based heavily on Ogre TerrainMaterialGeneratorA
+
+		// derive the tangent space basis
+		// For Ember, the tangent is always +x because the terrain is aligned to X_Z and we work in object space
+		vec3 tangent = vec3(1, 0, 0);
+		vec3 binormal;
+		// we do this in the pixel shader because we don't have per-vertex normals
+		// because of the LOD, we use a normal map
+		binormal = normalize(cross(tangent, normal));
+		// note, now we need to re-cross to derive tangent again because it wasn't orthonormal
+		tangent = normalize(cross(normal, binormal));
+		// derive final matrix
+		TBN = mat3(tangent, binormal, normal);
+
+		vec3 cameraDirectionTangentSpace = normalize(TBN * (cameraPositionObjSpace - positionObjSpace));
+
+		// Blends all the diffuse colors and normals
+		diffuseColour = splatting_offset_mapping(uv, cameraDirectionTangentSpace.xy, blendedNormalTangentSpace);
+	} else {
+		diffuseColour = splatting(uv);
+	}
 #else
-	vec4 diffuseColour = splatting(uv);
+	diffuseColour = splatting(uv);
 #endif // OFFSET_MAPPING
 
 	// If we're using shadows, we'll iterate through all of the lights and look up against the shadow textures etc.
@@ -536,17 +603,31 @@ void main()
 		}
 #endif // if SHADOW
 
-		lighting(i
 #ifdef OFFSET_MAPPING
-				 , TBN
-				 , blendedNormalTangentSpace
+		if (cameraDistance < OFFSET_MAPPING_DISTANCE) {
+			lighting_offset_mapping(i
+									, TBN
+									, blendedNormalTangentSpace
+									, attenuation[i]
+									, shadowing
+									, diffuse
+								   );
+		} else {
+			lighting(i
+					 , normal
+					 , attenuation[i]
+					 , shadowing
+					 , diffuse
+					);
+		}
 #else
+		lighting(i
 				 , normal
-#endif // ifdef OFFSET_MAPPING
 				 , attenuation[i]
 				 , shadowing
 				 , diffuse
 				);
+#endif // ifdef OFFSET_MAPPING
 	}
 
 	vec3 colour = vec3(gl_LightModel.ambient * diffuseColour +
