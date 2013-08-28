@@ -25,9 +25,9 @@
 #define NUM_LIGHTS      3
 #endif // ifndef NUM_LIGHTS
 
-#ifdef OFFSET_MAPPING
+#if OFFSET_MAPPING
 #define OFFSET_MAPPING_DISTANCE 50.0
-#endif // ifdef OFFSET_MAPPING
+#endif // if OFFSET_MAPPING
 
 // Either have shadows or not
 // Supports 3 lights
@@ -137,7 +137,7 @@ uniform sampler2D diffuseTexture11;
 #endif // if NUM_LAYERS > 11
 #endif // if NUM_LAYERS > 0
 
-#ifdef OFFSET_MAPPING
+#if OFFSET_MAPPING
 
 // Scale and bias for parallax
 // Having scale = 0,05 - 0,1 provides big visual depth
@@ -183,7 +183,7 @@ uniform sampler2D normalHeightTexture10;
 uniform sampler2D normalHeightTexture11;
 #endif // if NUM_LAYERS > 11
 
-#endif // OFFSET_MAPPING
+#endif // if OFFSET_MAPPING
 
 // Fog factor
 varying float fog;
@@ -552,7 +552,7 @@ void main()
 	}
 #else
 	diffuseColour = splatting(uv);
-#endif // OFFSET_MAPPING
+#endif // if OFFSET_MAPPING
 
 	// If we're using shadows, we'll iterate through all of the lights and look up against the shadow textures etc.
 	// If we're not however, we'll just use the first light (normally the sun) and make the whole lightning model much simpler.
