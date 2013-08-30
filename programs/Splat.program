@@ -372,6 +372,7 @@ fragment_program SplattingFp/OffsetMapping/1 glsl : SplattingFp
 	preprocessor_defines NUM_LAYERS=1,SHADOW=1,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1
 	default_params {
         param_named_auto cameraPositionObjSpace camera_position_object_space
+		param_named scaleBias float2 0.01 -0.1
 		param_named baseTextureDiffuse		 int 6
 		param_named baseTextureNormalHeight	 int 7
 	}
@@ -383,6 +384,7 @@ fragment_program SplattingFp/OffsetMapping/1/NoShadows glsl : SplattingFp/NoShad
 	preprocessor_defines NUM_LAYERS=1,SHADOW=0,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1
 	default_params {
         param_named_auto cameraPositionObjSpace camera_position_object_space
+		param_named scaleBias float2 0.01 -0.1
 		param_named baseTextureDiffuse		int 1
 		param_named baseTextureNormalHeight	int 2
 	}
@@ -393,6 +395,7 @@ fragment_program SplattingFp/OffsetMapping/1/Simple glsl : SplattingFp/Simple
 	preprocessor_defines NUM_LAYERS=1,SHADOW=0,NUM_LIGHTS=1,FOG=0,OFFSET_MAPPING=1
 	default_params {
         param_named_auto cameraPositionObjSpace camera_position_object_space
+		param_named scaleBias float2 0.01 -0.1
 		param_named baseTextureDiffuse		int 1
 		param_named baseTextureNormalHeight	int 2
 	}
