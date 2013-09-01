@@ -8,6 +8,7 @@ abstract fragment_program SplattingFp/Base glsl
 	default_params
 	{
 		param_named normalTexture int 0
+		param_named_auto numberOfActiveLights light_count
 
 		param_named_auto lightPositions[0] light_position_object_space 0
 		param_named_auto lightDiffuseColors[0] light_diffuse_colour 0

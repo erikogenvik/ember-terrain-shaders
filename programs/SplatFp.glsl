@@ -385,7 +385,6 @@ vec4 splatting(in vec2 texCoord)
 
 void lighting(in int index,
 			  in vec3 normal,                         // in object space
-			  in float attenuation,
 			  in float shadowing,
 			  inout vec4 diffuse)
 {
@@ -394,7 +393,7 @@ void lighting(in int index,
 
 	float NdotL = clamp(dot(normal, lightDir), 0, 1);
 
-	diffuse += lightDiffuseColors[index] * NdotL * attenuation * shadowing;
+	diffuse += lightDiffuseColors[index] * NdotL * attenuation[index] * shadowing;
 }
 
 #if SHADOW
@@ -547,7 +546,7 @@ void main()
 	vec4 diffuse = vec4(0.0);
 
 	// Loop through lights, compute contribution from each
-	for (int i = 0; i < NUM_LIGHTS; i++) {
+	for (int i = 0; i < NUM_LIGHTS && i < int(numberOfActiveLights); i++) {
 		float shadowing = 1.0;
 
 #if SHADOW
@@ -571,7 +570,7 @@ void main()
 		}
 #endif // if SHADOW
 
-		lighting(i, normal, attenuation[i], shadowing, diffuse);
+		lighting(i, normal, shadowing, diffuse);
 	}
 
 	vec3 colour = vec3(gl_LightModel.ambient * diffuseColour +
