@@ -4,6 +4,9 @@ uniform vec4 texelOffsets;
 #if LINEAR_RANGE
 uniform vec4 depthRange;
 #endif
+#if ALPHA
+varying vec2 uv;
+#endif
 
 varying vec2 depth;
 
@@ -12,7 +15,7 @@ void main()
 	// Pass-through default components
 	gl_Position    = gl_ModelViewProjectionMatrix * gl_Vertex;
 #if ALPHA
-	gl_TexCoord[0] = gl_MultiTexCoord0;
+	uv = gl_MultiTexCoord0.st;
 #endif
 
 	// fix pixel / texel alignment

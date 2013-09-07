@@ -10,6 +10,9 @@ material Ogre/DepthShadowmap/Caster/Float
 			fragment_program_ref Ogre/DepthShadowmap/CasterFP
 			{
 			}
+			texture_unit DiffuseMap
+			{
+			}
 		}
 	}
 }

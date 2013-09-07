@@ -36,6 +36,7 @@ fragment_program Ogre/DepthShadowmap/CasterFP glsl
 
 	default_params
 	{
+		param_named diffuseMap int 0
 	}
 }
 
