@@ -42,6 +42,7 @@
 #define NUM_LAYERS      1
 #endif // ifndef NUM_LAYERS
 
+#if NUM_LIGHTS > 0
 uniform vec4 lightPositions[NUM_LIGHTS];
 uniform vec4 lightDiffuseColors[NUM_LIGHTS];
 uniform vec4 lightSpecularColors[NUM_LIGHTS];
@@ -51,6 +52,7 @@ uniform sampler2D normalTexture;
 
 ///The number of active lights. This can be less than NUM_LIGHTS depending on the scene.
 uniform float numberOfActiveLights;
+#endif // if NUM_LIGHTS > 0
 
 #if SHADOW
 #define LINEAR_RANGE 0
@@ -383,6 +385,8 @@ vec4 splatting(in vec2 texCoord)
 
 #endif // if NUM_LAYERS > 0
 
+
+#if NUM_LIGHTS > 0
 void lighting(in int index,
 			  in vec3 normal,                         // in object space
 			  in float shadowing,
@@ -395,6 +399,7 @@ void lighting(in int index,
 
 	diffuse += lightDiffuseColors[index] * NdotL * attenuation[index] * shadowing;
 }
+#endif // if NUM_LIGHTS > 0
 
 #if SHADOW
 
@@ -545,6 +550,7 @@ void main()
 	// Accumulates diffuse light colour
 	vec4 diffuse = vec4(0.0);
 
+#if NUM_LIGHTS > 0
 	// Loop through lights, compute contribution from each
 	for (int i = 0; i < NUM_LIGHTS && i < int(numberOfActiveLights); i++) {
 		float shadowing = 1.0;
@@ -578,6 +584,16 @@ void main()
 	              ///1000.0 + shadowPSSMDebug()
 	              ///1000.0 + shadow3Debug()
 	;
+#else
+    // Should we take ambient into account if NUM_LIGHTS == 0?
+    vec3 colour = diffuseColour;
+#endif // if NUM_LIGHTS > 0
+// For debugging: Show the a offset mapping range indicator
+//#if OFFSET_MAPPING
+//	if (cameraDistance < OFFSET_MAPPING_DISTANCE + 1.0 && cameraDistance > OFFSET_MAPPING_DISTANCE - 1.0f) {
+//        colour = vec3(1, 0, 0);
+//    }
+//#endif
 
 	// gl_FragColor.rgb = N;
 	// gl_FragColor.rgb = blendedNormalTangentSpace;

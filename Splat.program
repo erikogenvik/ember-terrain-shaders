@@ -16,6 +16,15 @@ abstract fragment_program SplattingFp/Base glsl
 	}
 }
 
+abstract fragment_program SplattingFp/NoLighting glsl
+{
+	source resources/ogre/scripts/programs/SplatFp.glsl
+    preprocessor_defines NUM_LIGHTS=0,SHADOW=0,OFFSET_MAPPING=0,FOG=0
+	default_params
+	{
+	}
+}
+
 abstract fragment_program SplattingFp/FullyLit glsl : SplattingFp/Base
 {
     preprocessor_defines NUM_LIGHTS=3
@@ -90,6 +99,14 @@ fragment_program SplattingFp/1/Simple glsl : SplattingFp/Simple
 	}
 }
 
+fragment_program SplattingFp/1/NoLighting glsl : SplattingFp/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=1
+	default_params {
+		param_named baseTextureDiffuse		int 0
+	}
+}
+
 fragment_program SplattingFp/2 glsl : SplattingFp/1
 {
 	preprocessor_defines NUM_LAYERS=2,SHADOW=1,NUM_LIGHTS=3,FOG=1
@@ -117,6 +134,15 @@ fragment_program SplattingFp/2/Simple glsl : SplattingFp/1/Simple
 	}
 }
 
+fragment_program SplattingFp/2/NoLighting glsl : SplattingFp/1/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=2
+	default_params {
+		param_named coverageTexture1		int 1
+		param_named diffuseTexture1	int        2
+	}
+}
+
 fragment_program SplattingFp/3 glsl : SplattingFp/2
 {
 	preprocessor_defines NUM_LAYERS=3,SHADOW=1,NUM_LIGHTS=3,FOG=1
@@ -141,6 +167,22 @@ fragment_program SplattingFp/3/Simple glsl : SplattingFp/2/Simple
 	}
 }
 
+fragment_program SplattingFp/3/NoLighting glsl : SplattingFp/2/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=3
+	default_params {
+		param_named diffuseTexture2	int 3
+	}
+}
+
+fragment_program SplattingFp/3/NoLighting glsl : SplattingFp/2/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=3
+	default_params {
+		param_named diffuseTexture2	int 3
+	}
+}
+ 
 fragment_program SplattingFp/4 glsl : SplattingFp/3
 {
 	preprocessor_defines NUM_LAYERS=4,SHADOW=1,NUM_LIGHTS=3,FOG=1
@@ -165,6 +207,14 @@ fragment_program SplattingFp/4/Simple glsl : SplattingFp/3/Simple
 	}
 }
 
+fragment_program SplattingFp/4/NoLighting glsl : SplattingFp/3/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=4
+	default_params {
+		param_named diffuseTexture3	int 4
+	}
+}
+
 fragment_program SplattingFp/5 glsl : SplattingFp/4
 {
 	preprocessor_defines NUM_LAYERS=5,SHADOW=1,NUM_LIGHTS=3,FOG=1
@@ -186,6 +236,14 @@ fragment_program SplattingFp/5/Simple glsl : SplattingFp/4/Simple
 	preprocessor_defines NUM_LAYERS=5,SHADOW=0,NUM_LIGHTS=1,FOG=0
 	default_params {
 		param_named diffuseTexture4	int 6
+	}
+}
+
+fragment_program SplattingFp/5/NoLighting glsl : SplattingFp/4/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=5
+	default_params {
+		param_named diffuseTexture4	int 5
 	}
 }
 
@@ -216,6 +274,15 @@ fragment_program SplattingFp/6/Simple glsl : SplattingFp/5/Simple
 	}
 }
 
+fragment_program SplattingFp/6/NoLighting glsl : SplattingFp/5/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=6
+	default_params {
+		param_named coverageTexture2		int 6
+		param_named diffuseTexture5	int 7
+	}
+}
+
 fragment_program SplattingFp/7 glsl : SplattingFp/6
 {
 	preprocessor_defines NUM_LAYERS=7,SHADOW=1,NUM_LIGHTS=3,FOG=1
@@ -237,6 +304,14 @@ fragment_program SplattingFp/7/Simple glsl : SplattingFp/6/Simple
 	preprocessor_defines NUM_LAYERS=7,SHADOW=0,NUM_LIGHTS=1,FOG=0
 	default_params {
 		param_named diffuseTexture6	int 9
+	}
+}
+
+fragment_program SplattingFp/7/NoLighting glsl : SplattingFp/6/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=7
+	default_params {
+		param_named diffuseTexture6	int 8
 	}
 }
 
@@ -264,6 +339,14 @@ fragment_program SplattingFp/8/Simple glsl : SplattingFp/7/Simple
 	}
 }
 
+fragment_program SplattingFp/8/NoLighting glsl : SplattingFp/7/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=8
+	default_params {
+		param_named diffuseTexture7	int 9
+	}
+}
+
 fragment_program SplattingFp/9 glsl : SplattingFp/8
 {
 	preprocessor_defines NUM_LAYERS=9,SHADOW=1,NUM_LIGHTS=3,FOG=1
@@ -285,6 +368,14 @@ fragment_program SplattingFp/9/Simple glsl : SplattingFp/8/Simple
 	preprocessor_defines NUM_LAYERS=9,SHADOW=0,NUM_LIGHTS=1,FOG=0
 	default_params {
 		param_named diffuseTexture8	int 11
+	}
+}
+
+fragment_program SplattingFp/9/NoLighting glsl : SplattingFp/8/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=9
+	default_params {
+		param_named diffuseTexture8	int 10
 	}
 }
 
@@ -315,6 +406,15 @@ fragment_program SplattingFp/10/Simple glsl : SplattingFp/9/Simple
 	}
 }
 
+fragment_program SplattingFp/10/NoLighting glsl : SplattingFp/9/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=10
+	default_params {
+		param_named coverageTexture3		int 11
+		param_named diffuseTexture9	int 12
+	}
+}
+
 fragment_program SplattingFp/11 glsl : SplattingFp/10
 {
 	preprocessor_defines NUM_LAYERS=11,SHADOW=1,NUM_LIGHTS=3,FOG=1
@@ -339,6 +439,14 @@ fragment_program SplattingFp/11/Simple glsl : SplattingFp/10/Simple
 	}
 }
 
+fragment_program SplattingFp/11/NoLighting glsl : SplattingFp/10/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=11
+	default_params {
+		param_named diffuseTexture10	int 13
+	}
+}
+
 fragment_program SplattingFp/12 glsl : SplattingFp/11
 {
 	preprocessor_defines NUM_LAYERS=12,SHADOW=1,NUM_LIGHTS=3,FOG=1
@@ -360,6 +468,14 @@ fragment_program SplattingFp/12/Simple glsl : SplattingFp/11/Simple
 	preprocessor_defines NUM_LAYERS=12,SHADOW=0,NUM_LIGHTS=1,FOG=0
 	default_params {
 		param_named diffuseTexture11	int 15
+	}
+}
+
+fragment_program SplattingFp/12/NoLighting glsl : SplattingFp/11/NoLighting
+{
+	preprocessor_defines NUM_LAYERS=12
+	default_params {
+		param_named diffuseTexture11	int 14
 	}
 }
 
