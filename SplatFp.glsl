@@ -203,7 +203,7 @@ vec3 expand(in vec3 param)
 
 #if NUM_LAYERS > 0
 
-#ifdef OFFSET_MAPPING
+#if OFFSET_MAPPING
 vec4 splatting_offset_mapping(in vec2 texCoord, in vec2 cameraDirTangentSpace, out vec3 blendedNormal)
 {
 	vec4 diffuseColour;
@@ -312,7 +312,7 @@ vec4 splatting_offset_mapping(in vec2 texCoord, in vec2 cameraDirTangentSpace, o
 	return diffuseColour;
 }
 
-#endif // ifdef OFFSET_MAPPING
+#endif // if OFFSET_MAPPING
 
 vec4 splatting(in vec2 texCoord)
 {
@@ -510,8 +510,10 @@ void main()
 {
 	vec2 uv = gl_TexCoord[0].st;
 
+#if NUM_LIGHTS > 0
 	// get the normal from the normal texture
 	vec3 normal = normalize(expand(texture2D(normalTexture, uv).rgb));
+#endif
 	vec4 diffuseColour;
 
 #if OFFSET_MAPPING
@@ -586,7 +588,7 @@ void main()
 	;
 #else
     // Should we take ambient into account if NUM_LIGHTS == 0?
-    vec3 colour = diffuseColour;
+    vec3 colour = diffuseColour.rgb;
 #endif // if NUM_LIGHTS > 0
 // For debugging: Show the a offset mapping range indicator
 //#if OFFSET_MAPPING
