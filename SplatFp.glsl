@@ -355,7 +355,7 @@ vec4 splatting(in vec2 texCoord)
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture6, uv), blendWeight);
 #endif // if NUM_LAYERS > 6
 #if NUM_LAYERS > 7
-	uv = texCoord * scales[2][3];
+	uv = texCoord * scales[1][3];
 	blendWeight = texture2D(blendMap2, texCoord).y;         // Need to use unscaled uv here since blend map = unscaled
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture7, uv), blendWeight);
 #endif // if NUM_LAYERS > 7
