@@ -83,6 +83,9 @@ uniform float gradientScaleBias;
 
 uniform vec4 pssmSplitPoints;
 
+//If set to 1, fog colour will be disabled. This is needed when doing multipass blending.
+uniform int disableFogColour;
+
 // Shadow texture coordinates
 varying vec4 shadowTexCoord0;
 varying vec4 shadowTexCoord1;
@@ -864,7 +867,11 @@ void main()
 
 
 #if FOG
-	gl_FragColor.rgb = mix(gl_Fog.color.rgb, colour, fog) * gl_FragColor.a;
+if (disableFogColour == 1) {
+	gl_FragColor.rgb = colour * fog;
+} else {
+	gl_FragColor.rgb = mix(gl_Fog.color.rgb, colour, fog);
+}
 #else
 	gl_FragColor.rgb = colour;
 #endif // if FOG
