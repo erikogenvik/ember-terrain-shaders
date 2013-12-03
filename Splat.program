@@ -103,7 +103,6 @@ fragment_program SplattingFp/1/Simple glsl : SplattingFp/Simple
 fragment_program SplattingFp/1/NoLighting glsl : SplattingFp/NoLighting
 {
 	preprocessor_defines NUM_LAYERS=1,NUM_LIGHTS=0,SHADOW=0,OFFSET_MAPPING=0,FOG=0
-    NUM_LIGHTS=0,SHADOW=0,OFFSET_MAPPING=0,FOG=0
 	default_params {
 		param_named baseTextureDiffuse		int 0
 	}
