@@ -61,6 +61,9 @@ uniform sampler2D normalTexture;
 uniform float numberOfActiveLights;
 #endif // if NUM_LIGHTS > 0
 
+//If set to 1, fog colour will be disabled. This is needed when doing multipass blending.
+uniform int disableFogColour;
+
 #if SHADOW
 #define LINEAR_RANGE 0
 
@@ -82,9 +85,6 @@ uniform float gradientClamp;
 uniform float gradientScaleBias;
 
 uniform vec4 pssmSplitPoints;
-
-//If set to 1, fog colour will be disabled. This is needed when doing multipass blending.
-uniform int disableFogColour;
 
 // Shadow texture coordinates
 varying vec4 shadowTexCoord0;
