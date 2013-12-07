@@ -10,10 +10,6 @@ abstract fragment_program SplattingFp/Base glsl
 		param_named normalTexture int 0
 		param_named disableFogColour int 0
 		param_named_auto numberOfActiveLights light_count
-
-		param_named_auto lightPositions[0] light_position_object_space 0
-		param_named_auto lightDiffuseColors[0] light_diffuse_colour 0
-		param_named_auto lightSpecularColors[0] light_specular_colour 0
 	}
 }
 
@@ -29,16 +25,6 @@ abstract fragment_program SplattingFp/NoLighting glsl
 abstract fragment_program SplattingFp/FullyLit glsl : SplattingFp/Base
 {
     preprocessor_defines NUM_LIGHTS=3
-	default_params
-    {
-		param_named_auto lightPositions[1] light_position_object_space 1
-		param_named_auto lightDiffuseColors[1] light_diffuse_colour 1
-		param_named_auto lightSpecularColors[1] light_specular_colour 1
-
-		param_named_auto lightPositions[2] light_position_object_space 2
-		param_named_auto lightDiffuseColors[2] light_diffuse_colour 2
-		param_named_auto lightSpecularColors[2] light_specular_colour 2
-    }
 }
 
 // Base which should be used normally, supporting shadows and 3 light sources

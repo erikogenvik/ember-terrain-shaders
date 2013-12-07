@@ -50,9 +50,6 @@
 #endif // ifndef NUM_LAYERS
 
 #if NUM_LIGHTS > 0
-uniform vec4 lightPositions[NUM_LIGHTS];
-uniform vec4 lightDiffuseColors[NUM_LIGHTS];
-uniform vec4 lightSpecularColors[NUM_LIGHTS];
 
 // Normals are stored in a texture, not per-vertex, in object space
 uniform sampler2D normalTexture;
@@ -646,17 +643,21 @@ vec4 splatting(in vec2 texCoord)
 
 
 #if NUM_LIGHTS > 0
-void lighting(in int index,
+void lighting(in gl_LightSourceParameters light,
 			  in vec3 normal,                         // in object space
 			  in float shadowing,
+			  in float attenuation,
 			  inout vec4 diffuse)
 {
+	
+	//Due to a bug in Ogre which seems to not reset state between scene managers we can't use the "object space light position" auto const.
+	//We instead need to translate the light position into object space for each fragment. 
+
 	// Compute vector from surface to light position
-	vec3 lightDir = lightPositions[index].xyz - positionObjSpace * lightPositions[index].w;
-
-	float NdotL = clamp(dot(normal, lightDir), 0, 1);
-
-	diffuse += lightDiffuseColors[index] * NdotL * attenuation[index] * shadowing;
+	vec3 lightDir = normalize((vec4(light.position.xyz, 1.0) * gl_ModelViewMatrix).xyz - positionObjSpace * light.position.w);
+	float NdotL = max(0.0, dot(normal, lightDir));
+	
+	diffuse += light.diffuse * NdotL * attenuation * shadowing;
 }
 #endif // if NUM_LIGHTS > 0
 
@@ -815,10 +816,11 @@ void main()
 	// Loop through lights, compute contribution from each
 	for (int i = 0; i < NUM_LIGHTS && i < int(numberOfActiveLights); i++) {
 		float shadowing = 1.0;
+		gl_LightSourceParameters light = gl_LightSource[i];
 
 #if SHADOW
 		// Use PSSM only for first directional light
-		if (lightPositions[0].w == 0.0) {
+		if (light.position.w == 0.0) {
 			if (i == 0) {
 				shadowing = shadowPSSM();
 			} else if (i == 1) {
@@ -837,7 +839,7 @@ void main()
 		}
 #endif // if SHADOW
 
-		lighting(i, normal, shadowing, diffuse);
+		lighting(light, normal, shadowing, attenuation[i], diffuse);
 	}
 
 	vec3 colour = vec3(gl_LightModel.ambient * diffuseColour +
