@@ -177,6 +177,9 @@ uniform sampler2D diffuseTexture10;
 #if NUM_LAYERS > 10
 uniform sampler2D diffuseTexture11;
 #endif // if NUM_LAYERS > 10
+#if NUM_LAYERS > 11
+uniform sampler2D diffuseTexture12;
+#endif // if NUM_LAYERS > 11
 
 #endif // if BASE_LAYER
 
@@ -263,6 +266,9 @@ uniform sampler2D normalHeightTexture10;
 #if NUM_LAYERS > 10
 uniform sampler2D normalHeightTexture11;
 #endif // if NUM_LAYERS > 10
+#if NUM_LAYERS > 11
+uniform sampler2D normalHeightTexture12;
+#endif // if NUM_LAYERS > 11
 
 #endif // if BASE_LAYER
 
@@ -489,6 +495,14 @@ vec4 splatting_offset_mapping(in vec2 texCoord, in vec2 cameraDirTangentSpace, o
 	blendWeight = texture2D(blendMap3, texCoord).y;         // Need to use unscaled uv here since blend map = unscaled
 	blendedNormal = mix(blendedNormal, texture2D(normalHeightTexture11, uv).rgb, blendWeight);
 	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture11, uv), blendWeight);
+#endif // if NUM_LAYERS > 10
+#if NUM_LAYERS > 11
+	uv = texCoord * scales[2][3];
+	displacement = texture2D(normalHeightTexture12, uv).a * scaleBias.x + scaleBias.y;
+	uv += cameraDirTangentSpace * displacement;
+	blendWeight = texture2D(blendMap3, texCoord).z;         // Need to use unscaled uv here since blend map = unscaled
+	blendedNormal = mix(blendedNormal, texture2D(normalHeightTexture12, uv).rgb, blendWeight);
+	diffuseColour = mix(diffuseColour, texture2D(diffuseTexture12, uv), blendWeight);
 #endif // if NUM_LAYERS > 10
 
 	blendedNormal = normalize(expand(blendedNormal));

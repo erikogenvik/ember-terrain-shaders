@@ -507,6 +507,18 @@ fragment_program SplattingFp/OffsetMapping/1/NoShadows glsl : SplattingFp/NoShad
 	}
 }
 
+fragment_program SplattingFp/OffsetMapping/1/NoBaseLayer/NoShadows glsl : SplattingFp/NoShadows
+{
+	preprocessor_defines NUM_LAYERS=1,SHADOW=0,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1,BASE_LAYER=0
+	default_params {
+        param_named_auto cameraPositionObjSpace camera_position_object_space
+		param_named scaleBias float2 0.01 -0.00
+		param_named blendMap1		int 1
+		param_named diffuseTexture1	        int 2
+		param_named normalHeightTexture1	int 3
+	}
+}
+
 fragment_program SplattingFp/OffsetMapping/1/Simple glsl : SplattingFp/Simple
 {
 	preprocessor_defines NUM_LAYERS=1,SHADOW=0,NUM_LIGHTS=1,FOG=0,OFFSET_MAPPING=1
@@ -642,8 +654,9 @@ fragment_program SplattingFp/OffsetMapping/5/NoBaseLayer glsl : SplattingFp/Offs
 {
 	preprocessor_defines NUM_LAYERS=5,SHADOW=1,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1,BASE_LAYER=0
 	default_params {
-		param_named diffuseTexture5	        int 15
-		param_named normalHeightTexture5	int 16
+		param_named blendMap2		int 15
+		param_named diffuseTexture5	        int 16
+		param_named normalHeightTexture5	int 17
 	}
 }
 
@@ -672,6 +685,15 @@ fragment_program SplattingFp/OffsetMapping/6 glsl : SplattingFp/OffsetMapping/5
 		param_named blendMap2		int 17
 		param_named diffuseTexture5	        int 18
 		param_named normalHeightTexture5	int 19
+	}
+}
+
+fragment_program SplattingFp/OffsetMapping/6/NoBaseLayer glsl : SplattingFp/OffsetMapping/5/NoBaseLayer
+{
+	preprocessor_defines NUM_LAYERS=6,SHADOW=1,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1,BASE_LAYER=0
+	default_params {
+		param_named diffuseTexture6	        int 18
+		param_named normalHeightTexture6	int 19
 	}
 }
 
@@ -704,6 +726,15 @@ fragment_program SplattingFp/OffsetMapping/7 glsl : SplattingFp/OffsetMapping/6
 	}
 }
 
+fragment_program SplattingFp/OffsetMapping/7/NoBaseLayer glsl : SplattingFp/OffsetMapping/6/NoBaseLayer
+{
+	preprocessor_defines NUM_LAYERS=7,SHADOW=1,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1,BASE_LAYER=0
+	default_params {
+		param_named diffuseTexture7	        int 20
+		param_named normalHeightTexture7	int 21
+	}
+}
+
 fragment_program SplattingFp/OffsetMapping/7/NoShadows glsl : SplattingFp/OffsetMapping/6/NoShadows
 {
 	preprocessor_defines NUM_LAYERS=7,SHADOW=0,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1
@@ -728,6 +759,15 @@ fragment_program SplattingFp/OffsetMapping/8 glsl : SplattingFp/OffsetMapping/7
 	default_params {
 		param_named diffuseTexture7	        int 22
 		param_named normalHeightTexture7	int 23
+	}
+}
+
+fragment_program SplattingFp/OffsetMapping/8/NoBaseLayer glsl : SplattingFp/OffsetMapping/7/NoBaseLayer
+{
+	preprocessor_defines NUM_LAYERS=8,SHADOW=1,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1,BASE_LAYER=0
+	default_params {
+		param_named diffuseTexture8	        int 22
+		param_named normalHeightTexture8	int 23
 	}
 }
 
@@ -758,6 +798,15 @@ fragment_program SplattingFp/OffsetMapping/9 glsl : SplattingFp/OffsetMapping/8
 	}
 }
 
+fragment_program SplattingFp/OffsetMapping/9/NoBaseLayer glsl : SplattingFp/OffsetMapping/8/NoBaseLayer
+{
+	preprocessor_defines NUM_LAYERS=9,SHADOW=1,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1,BASE_LAYER=0
+	default_params {
+		param_named blendMap3		int 24
+		param_named diffuseTexture9	        int 25
+		param_named normalHeightTexture9	int 26
+	}
+}
 fragment_program SplattingFp/OffsetMapping/9/NoShadows glsl : SplattingFp/OffsetMapping/8/NoShadows
 {
 	preprocessor_defines NUM_LAYERS=9,SHADOW=0,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1
@@ -785,6 +834,14 @@ fragment_program SplattingFp/OffsetMapping/10 glsl : SplattingFp/OffsetMapping/9
 	}
 }
 
+fragment_program SplattingFp/OffsetMapping/10/NoBaseLayer glsl : SplattingFp/OffsetMapping/9/NoBaseLayer
+{
+	preprocessor_defines NUM_LAYERS=10,SHADOW=1,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1,BASE_LAYER=0
+	default_params {
+		param_named diffuseTexture10	    int 27
+		param_named normalHeightTexture10	int 28
+	}
+}
 fragment_program SplattingFp/OffsetMapping/10/NoShadows glsl : SplattingFp/OffsetMapping/9/NoShadows
 {
 	preprocessor_defines NUM_LAYERS=10,SHADOW=0,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1
@@ -814,6 +871,15 @@ fragment_program SplattingFp/OffsetMapping/11 glsl : SplattingFp/OffsetMapping/1
 	}
 }
 
+fragment_program SplattingFp/OffsetMapping/11/NoBaseLayer glsl : SplattingFp/OffsetMapping/10/NoBaseLayer
+{
+	preprocessor_defines NUM_LAYERS=11,SHADOW=1,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1,BASE_LAYER=0
+	default_params {
+		param_named diffuseTexture11	    int 29
+		param_named normalHeightTexture11	int 30
+	}
+}
+
 fragment_program SplattingFp/OffsetMapping/11/NoShadows glsl : SplattingFp/OffsetMapping/10/NoShadows
 {
 	preprocessor_defines NUM_LAYERS=11,SHADOW=0,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1
@@ -838,6 +904,15 @@ fragment_program SplattingFp/OffsetMapping/12 glsl : SplattingFp/OffsetMapping/1
 	default_params {
 		param_named diffuseTexture11	    int 31
 		param_named normalHeightTexture11	int 32
+	}
+}
+
+fragment_program SplattingFp/OffsetMapping/12/NoBaseLayer glsl : SplattingFp/OffsetMapping/11/NoBaseLayer
+{
+	preprocessor_defines NUM_LAYERS=12,SHADOW=1,NUM_LIGHTS=3,FOG=1,OFFSET_MAPPING=1,BASE_LAYER=0
+	default_params {
+		param_named diffuseTexture12	    int 31
+		param_named normalHeightTexture12	int 32
 	}
 }
 
