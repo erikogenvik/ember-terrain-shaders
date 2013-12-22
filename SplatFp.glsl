@@ -59,6 +59,7 @@ uniform int disableFogColour;
 
 #if SHADOW
 #define LINEAR_RANGE 0
+#endif // if SHADOW
 
 // Shadow maps
 uniform sampler2D shadowMap0;
@@ -85,9 +86,7 @@ varying vec4 shadowTexCoord1;
 varying vec4 shadowTexCoord2;
 varying vec4 shadowTexCoord3;
 varying vec4 shadowTexCoord4;
-#endif // if SHADOW
 
-#if NUM_LAYERS > 0
 #if NUM_LAYERS > 8
 uniform vec4 scales[3];
 #else
@@ -97,91 +96,23 @@ uniform vec4 scales[2];
 uniform vec4 scales[1];
 #endif // if NUM_LAYERS > 4
 #endif // if NUM_LAYERS > 8
-#if BASE_LAYER
 uniform sampler2D baseTextureDiffuse;
-#if NUM_LAYERS > 1
 uniform sampler2D blendMap1;
 uniform sampler2D diffuseTexture1;
-#endif // if NUM_LAYERS > 1
-#if NUM_LAYERS > 2
 uniform sampler2D diffuseTexture2;
-#endif // if NUM_LAYERS > 2
-#if NUM_LAYERS > 3
 uniform sampler2D diffuseTexture3;
-#endif // if NUM_LAYERS > 3
-#if NUM_LAYERS > 4
 uniform sampler2D diffuseTexture4;
-#endif // if NUM_LAYERS > 4
-#if NUM_LAYERS > 5
 uniform sampler2D blendMap2;
 uniform sampler2D diffuseTexture5;
-#endif // if NUM_LAYERS > 5
-#if NUM_LAYERS > 6
 uniform sampler2D diffuseTexture6;
-#endif // if NUM_LAYERS > 6
-#if NUM_LAYERS > 7
 uniform sampler2D diffuseTexture7;
-#endif // if NUM_LAYERS > 7
-#if NUM_LAYERS > 8
 uniform sampler2D diffuseTexture8;
-#endif // if NUM_LAYERS > 8
-#if NUM_LAYERS > 9
 uniform sampler2D blendMap3;
 uniform sampler2D diffuseTexture9;
-#endif // if NUM_LAYERS > 9
-#if NUM_LAYERS > 10
 uniform sampler2D diffuseTexture10;
-#endif // if NUM_LAYERS > 10
-#if NUM_LAYERS > 11
 uniform sampler2D diffuseTexture11;
-#endif // if NUM_LAYERS > 11
-
-#else // if !BASE_LAYER
-
-uniform sampler2D blendMap1;
-uniform sampler2D diffuseTexture1;
-
-#if NUM_LAYERS > 1
-uniform sampler2D diffuseTexture2;
-#endif // if NUM_LAYERS > 2
-#if NUM_LAYERS > 2
-uniform sampler2D diffuseTexture3;
-#endif // if NUM_LAYERS > 3
-#if NUM_LAYERS > 3
-uniform sampler2D diffuseTexture4;
-#endif // if NUM_LAYERS > 4
-#if NUM_LAYERS > 4
-uniform sampler2D blendMap2;
-uniform sampler2D diffuseTexture5;
-#endif // if NUM_LAYERS > 4
-#if NUM_LAYERS > 5
-uniform sampler2D diffuseTexture6;
-#endif // if NUM_LAYERS > 5
-#if NUM_LAYERS > 6
-uniform sampler2D diffuseTexture7;
-#endif // if NUM_LAYERS > 6
-#if NUM_LAYERS > 7
-uniform sampler2D diffuseTexture8;
-#endif // if NUM_LAYERS > 7
-#if NUM_LAYERS > 8
-uniform sampler2D blendMap3;
-uniform sampler2D diffuseTexture9;
-#endif // if NUM_LAYERS > 8
-#if NUM_LAYERS > 9
-uniform sampler2D diffuseTexture10;
-#endif // if NUM_LAYERS > 9
-#if NUM_LAYERS > 10
-uniform sampler2D diffuseTexture11;
-#endif // if NUM_LAYERS > 10
-#if NUM_LAYERS > 11
 uniform sampler2D diffuseTexture12;
-#endif // if NUM_LAYERS > 11
 
-#endif // if BASE_LAYER
-
-#endif // if NUM_LAYERS > 0
-
-#if OFFSET_MAPPING
 
 // Scale and bias for parallax
 // Having scale = 0,05 - 0,1 provides big visual depth
@@ -191,85 +122,21 @@ uniform vec2 scaleBias;
 
 uniform vec3 cameraPositionObjSpace;
 
-#if BASE_LAYER
 uniform sampler2D baseTextureNormalHeight;
-#if NUM_LAYERS > 1
 uniform sampler2D normalHeightTexture1;
-#endif // if NUM_LAYERS > 1
-#if NUM_LAYERS > 2
 uniform sampler2D normalHeightTexture2;
-#endif // if NUM_LAYERS > 2
-#if NUM_LAYERS > 3
 uniform sampler2D normalHeightTexture3;
-#endif // if NUM_LAYERS > 3
-#if NUM_LAYERS > 4
 uniform sampler2D normalHeightTexture4;
-#endif // if NUM_LAYERS > 4
-#if NUM_LAYERS > 5
 uniform sampler2D normalHeightTexture5;
-#endif // if NUM_LAYERS > 5
-#if NUM_LAYERS > 6
 uniform sampler2D normalHeightTexture6;
-#endif // if NUM_LAYERS > 6
-#if NUM_LAYERS > 7
 uniform sampler2D normalHeightTexture7;
-#endif // if NUM_LAYERS > 7
-#if NUM_LAYERS > 8
 uniform sampler2D normalHeightTexture8;
-#endif // if NUM_LAYERS > 8
-#if NUM_LAYERS > 9
 uniform sampler2D normalHeightTexture9;
-#endif // if NUM_LAYERS > 9
-#if NUM_LAYERS > 10
 uniform sampler2D normalHeightTexture10;
-#endif // if NUM_LAYERS > 10
-#if NUM_LAYERS > 11
 uniform sampler2D normalHeightTexture11;
-#endif // if NUM_LAYERS > 11
-
-#else // else BASE_LAYER
-
-#if NUM_LAYERS > 0
-uniform sampler2D normalHeightTexture1;
-#endif // if NUM_LAYERS > 0
-#if NUM_LAYERS > 1
-uniform sampler2D normalHeightTexture2;
-#endif // if NUM_LAYERS > 1
-#if NUM_LAYERS > 2
-uniform sampler2D normalHeightTexture3;
-#endif // if NUM_LAYERS > 2
-#if NUM_LAYERS > 3
-uniform sampler2D normalHeightTexture4;
-#endif // if NUM_LAYERS > 3
-#if NUM_LAYERS > 4
-uniform sampler2D normalHeightTexture5;
-#endif // if NUM_LAYERS > 4
-#if NUM_LAYERS > 5
-uniform sampler2D normalHeightTexture6;
-#endif // if NUM_LAYERS > 5
-#if NUM_LAYERS > 6
-uniform sampler2D normalHeightTexture7;
-#endif // if NUM_LAYERS > 6
-#if NUM_LAYERS > 7
-uniform sampler2D normalHeightTexture8;
-#endif // if NUM_LAYERS > 7
-#if NUM_LAYERS > 8
-uniform sampler2D normalHeightTexture9;
-#endif // if NUM_LAYERS > 8
-#if NUM_LAYERS > 9
-uniform sampler2D normalHeightTexture10;
-#endif // if NUM_LAYERS > 9
-#if NUM_LAYERS > 10
-uniform sampler2D normalHeightTexture11;
-#endif // if NUM_LAYERS > 10
-#if NUM_LAYERS > 11
 uniform sampler2D normalHeightTexture12;
-#endif // if NUM_LAYERS > 11
-
-#endif // if BASE_LAYER
 
 
-#endif // if OFFSET_MAPPING
 
 // Fog factor
 varying float fog;
