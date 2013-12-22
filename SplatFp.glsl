@@ -25,10 +25,6 @@
 #define NUM_LIGHTS      3
 #endif // ifndef NUM_LIGHTS
 
-#if OFFSET_MAPPING
-#define OFFSET_MAPPING_DISTANCE 50.0
-#endif // if OFFSET_MAPPING
-
 // Either have shadows or not
 // Supports 3 lights
 #ifndef SHADOW
@@ -792,31 +788,24 @@ void main()
 
 #if OFFSET_MAPPING
 	vec3 blendedNormalTangentSpace;
-	float cameraDistance = distance(cameraPositionObjSpace, positionObjSpace);
-	if (cameraDistance < OFFSET_MAPPING_DISTANCE) {
-		// Offset mapping code based heavily on Ogre TerrainMaterialGeneratorA
+	// Offset mapping code based heavily on Ogre TerrainMaterialGeneratorA
 
-		// derive the tangent space basis
-		// For Ember, the tangent is always +x because the terrain is aligned to X_Z and we work in object space
-		vec3 tangent = vec3(1, 0, 0);
-		vec3 binormal;
-		// we do this in the pixel shader because we don't have per-vertex normals
-		// because of the LOD, we use a normal map
-		binormal = normalize(cross(tangent, normal));
-		// note, now we need to re-cross to derive tangent again because it wasn't orthonormal
-		tangent = normalize(cross(normal, binormal));
-		mat3 TBN;
-		// derive final matrix
-		TBN = mat3(tangent, binormal, normal);
+	// derive the tangent space basis
+	// For Ember, the tangent is always +x because the terrain is aligned to X_Z and we work in object space
+	vec3 tangent = vec3(1, 0, 0);
+	// we do this in the pixel shader because we don't have per-vertex normals
+	// because of the LOD, we use a normal map
+	vec3 binormal = normalize(cross(tangent, normal));
+	// note, now we need to re-cross to derive tangent again because it wasn't orthonormal
+	tangent = normalize(cross(normal, binormal));
+	// derive final matrix
+	mat3 TBN = mat3(tangent, binormal, normal);
 
-		vec3 cameraDirectionTangentSpace = normalize(transpose(TBN) * (cameraPositionObjSpace - positionObjSpace));
+	vec3 cameraDirectionTangentSpace = normalize(transpose(TBN) * (cameraPositionObjSpace - positionObjSpace));
 
-		// Blends all the diffuse colors and normals
-		diffuseColour = splatting_offset_mapping(uv, cameraDirectionTangentSpace.xy, blendedNormalTangentSpace);
-		normal = normalize(TBN * blendedNormalTangentSpace);
-	} else {
-		diffuseColour = splatting(uv);
-	}
+	// Blends all the diffuse colors and normals
+	diffuseColour = splatting_offset_mapping(uv, cameraDirectionTangentSpace.xy, blendedNormalTangentSpace);
+	normal = normalize(TBN * blendedNormalTangentSpace);
 #else
 	diffuseColour = splatting(uv);
 #endif // if OFFSET_MAPPING
